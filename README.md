@@ -1,2 +1,2 @@
 # SQLQueries
-SQL Queries from my project with CareerFoundry
+The SQL project I completed during my CareerFoundry Data Analytics course is based on data for a fictional movie rental company - Rockbuster Stealth LLC. Rockbuster Stealth LLC is a movie rental company that used to hvae stores around the world. Facing stiff competition from streaming services such as Netflix and Amazon Prime, the Rockbuster Stealth management team is planning to use its existing movie licenses to launch an online video rental service in order to stay competitive. My role in this project as a data analyst was to help with the launch strategy for the new online video service.
