@@ -1,0 +1,20 @@
+# This is a SQL query of a CTE which displays the top 10 films in the database, including each of their ratings, categories, and total revenue.
+
+SELECT
+  D.title,
+  D.rating,
+  F.name AS category,
+  SUM(A.amount) AS "Total Amount Paid"
+FROM
+  payment A
+  INNER JOIN rental B ON A.rental_id = B.rental_id
+  INNER JOIN inventory C ON B.inventory_id = C.inventory_id
+  INNER JOIN film D ON C.film_ID = D.film_ID
+  INNER JOIN film_category E ON D.film_ID = E.film_ID
+  INNER JOIN category F ON E.category_ID = F.category_id
+GROUP BY
+  D.title,
+  D.rating,
+  F.name
+ORDER BY
+  "Total Amount Paid" DESC;
