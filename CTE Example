@@ -1,20 +1,40 @@
-# This is a SQL query of a CTE which displays the top 10 films in the database, including each of their ratings, categories, and total revenue.
+# This is a SQL query of a CTE which displays top 5 countries in the database, each of their customer counts, and how many top customers each has
 
+WITH top_customers (customer_id, first_name, last_name, country, city, total_amount_paid) AS (
+    SELECT
+        A.customer_id,
+        A.first_name AS "customer first name",
+        A.last_name AS "customer last name",
+        C.city,
+        D.country,
+        SUM(E.amount) AS "total_amount_paid"
+    FROM
+        customer A
+        INNER JOIN address B ON A.address_id = B.address_id
+        INNER JOIN city C ON B.city_id = C.city_id
+        INNER JOIN country D ON C.country_id = D.country_id
+        INNER JOIN payment E ON A.customer_id = E.customer_id
+    WHERE
+        city IN ('Aurora', 'Acua', 'Citrus Heights', 'Iwaki', 'Ambattur', 'Shanwei', 'So Leopoldo', 'Teobksary', 'Tianjin', 'Cianjur')
+    GROUP BY
+        A.customer_id, A.first_name, A.last_name, D.country, C.city
+    ORDER BY
+        total_amount_paid DESC
+    LIMIT 5
+)
 SELECT
-  D.title,
-  D.rating,
-  F.name AS category,
-  SUM(A.amount) AS "Total Amount Paid"
+    D.country,
+    COUNT(A.customer_id) AS all_customer_count,
+    COUNT(top_customers.customer_id) AS top_customer_count
 FROM
-  payment A
-  INNER JOIN rental B ON A.rental_id = B.rental_id
-  INNER JOIN inventory C ON B.inventory_id = C.inventory_id
-  INNER JOIN film D ON C.film_ID = D.film_ID
-  INNER JOIN film_category E ON D.film_ID = E.film_ID
-  INNER JOIN category F ON E.category_ID = F.category_id
+    customer A
+    INNER JOIN address B ON A.address_id = B.address_id
+    INNER JOIN city C ON B.city_id = C.city_id
+    INNER JOIN country D ON C.country_id = D.country_id
+    LEFT JOIN top_customers ON A.customer_id = top_customers.customer_id
 GROUP BY
-  D.title,
-  D.rating,
-  F.name
+    D.country
 ORDER BY
-  "Total Amount Paid" DESC;
+    top_customer_count DESC,
+    all_customer_count DESC
+LIMIT 5;
